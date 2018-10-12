@@ -55,8 +55,8 @@ module.exports = {
     })
     .catch(e => {
       console.log(e, 'the error');
-      res.status(400).send({ message: e.errors || e }));
-    }
+      res.status(400).send({ message: e.errors || e });
+    });
   },
 
   getParentLocations(req, res) {

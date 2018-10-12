@@ -53,6 +53,29 @@ module.exports = {
 
       return res.status(200).send({ location });
     })
-    .catch(e => res.status(400).send({ message: e.errors[0].message || e }));
+    .catch(e => res.status(400).send({ message: e.errors || e }));
   },
+
+  getParentLocations(req, res) {
+    return Location.findAndCountAll({
+      where: {
+        parentLocation: null
+      },
+      order: [['updatedAt', 'DESC']]
+    })
+    .then(locations => {
+      if (locations.count > 0) {
+        for (let i = 0; i < locations.count; i++) {
+          const { male, female } = locations.rows[i].dataValues;
+          const totalPopulation = male + female;
+          console.log(totalPopulation, 'sdsd');
+          locations.rows[i].dataValues['totalPopulation'] = totalPopulation;
+        }
+        return res.status(200).send({ locations });
+      } else {
+        return res.status(200).send({ message: 'No locations found' });
+      }
+    })
+    .catch(e => res.status(400).send({ message: e.errors[0].message || e }));
+  }
 }

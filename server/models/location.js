@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
+        min: 1,
         isInt: {
           msg: 'Invalid zip code'
         },
@@ -33,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
+        min: 1,
         isInt: {
           msg: 'Invalid male population'
         },
@@ -43,6 +45,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
+        min: 1,
         isInt: {
           msg: 'Invalid female population'
         },

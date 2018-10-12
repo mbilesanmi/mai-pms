@@ -10,6 +10,11 @@ module.exports = {
     };
     const { name, parentLocation, zip, male, female } = req.body;
 
+    if (isNaN(zip) || (zip < 0)) return res.status(400).send({ message: 'Invalid zip' })
+
+    if (isNaN(male) || isNaN(female) || (male < 0) || (female < 0))
+      return res.status(400).send({ message: 'Invalid population' })
+
     const createLocation = (parentLoc = null) => Location.create({
       name,
       parentLocation: parentLoc,

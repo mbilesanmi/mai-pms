@@ -25,18 +25,18 @@ module.exports = {
         });
       }
     })
-    .catch(e => res.status(404).send({ message: e.errors || e }));
+    .catch(e => res.status(400).send({ message: e.errors[0].message || e }));
 
     if (parentLocation) {
       Location.findOne({ where: { id: parentLocation } })
       .then((loc) => {
         if (!loc) {
-          return res.status(400).send({ message: 'Parent Location not found' });
+          return res.status(400).send({ message: 'Parent location not found' });
         } else {
           createLocation(loc.id);
         }
       }) 
-      .catch(e => res.status(400).send({ message: e.errors || e  }));
+      .catch(e => res.status(400).send({ message: e.errors[0].message || e }));
     } else {
       createLocation();
     }

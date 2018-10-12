@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         isInt: {
-          msg: 'Invalid male population'
+          msg: 'Invalid female population'
         },
         notEmpty: true
       }

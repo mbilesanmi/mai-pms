@@ -40,5 +40,19 @@ module.exports = {
     } else {
       createLocation();
     }
-  }
+  },
+
+  getOneLocation(req, res) {
+    const { locationId } = req.params;
+
+    if (isNaN(locationId)) return res.status(400).send({ message: 'Invalid location id' })
+
+    return Location.findById(locationId)
+    .then(location => {
+      if (!location) return res.status(404).send({ message: 'Location not found' })
+
+      return res.status(200).send({ location });
+    })
+    .catch(e => res.status(400).send({ message: e.errors[0].message || e }));
+  },
 }

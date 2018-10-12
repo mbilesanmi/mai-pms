@@ -142,4 +142,39 @@ describe('LOCATION API', () => {
         });
     });
   });
+
+  describe('GET Location GET /locations', () => {
+    it('it should get a location when the locationId is valid', (done) => {
+      superRequest.get(`/locations/${location1.id}`)
+        .set({ 'content-type': 'application/json' })
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.location.name).to.equal(location1.name);
+          expect(res.body.location.female).to.equal(location1.female);
+          expect(res.body.location.male).to.equal(location1.male);
+          expect(res.body.location.id).to.equal(location1.id);
+          done();
+        });
+    });
+
+    it('it should not get a location when the locationId is invalid', done => {
+      superRequest.get('/locations/"invalid"')
+        .set({ 'content-type': 'application/json' })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.body.message).to.equal('Invalid location id');
+          done();
+        });
+    });
+
+    it('it should not get a location when the locationId does not exist', done => {
+      superRequest.get('/locations/99999')
+        .set({ 'content-type': 'application/json' })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          expect(res.body.message).to.equal('Location not found');
+          done();
+        });
+    });
+  });
 });

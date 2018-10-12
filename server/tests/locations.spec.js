@@ -62,7 +62,8 @@ describe('LOCATION API', () => {
     it('it should not create a new location when the name field is not supplied', done => {
       superRequest.post('/locations')
         .set({ 'content-type': 'application/json' })
-        .send({ 
+        .send({
+          zip: 1223,
           male: 3000,
           female: 10000
         })
@@ -78,6 +79,7 @@ describe('LOCATION API', () => {
         .set({ 'content-type': 'application/json' })
         .send({
           name: 'Maryland',
+          zip: 121,
           male: 30000,
           female: 10000,
           parentLocation: 9999

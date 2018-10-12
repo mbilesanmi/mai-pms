@@ -6,6 +6,8 @@ const logger = require('morgan');
 
 const app = express();
 
+const routes = require('./server/routes');
+
 // Assign port and create server
 const port = parseInt(process.env.PORT, 10) || '4000';
 app.set('port', port);
@@ -18,6 +20,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 winston.info('Configure routes...');
+routes(app);
 
 // Catch all other routes.
 app.get('*', (req, res) => res.status(200).send({

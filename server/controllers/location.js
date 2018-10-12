@@ -68,7 +68,7 @@ module.exports = {
         for (let i = 0; i < locations.count; i++) {
           const { male, female } = locations.rows[i].dataValues;
           const totalPopulation = male + female;
-          console.log(totalPopulation, 'sdsd');
+
           locations.rows[i].dataValues['totalPopulation'] = totalPopulation;
         }
         return res.status(200).send({ locations });

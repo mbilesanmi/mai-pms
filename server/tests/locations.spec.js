@@ -146,7 +146,7 @@ describe('LOCATION API', () => {
   });
 
   describe('GET Location GET /locations', () => {
-    it('it should get a location when the locationId is valid', (done) => {
+    it('it should get a location when the locationId is valid', done => {
       superRequest.get(`/locations/${location1.id}`)
         .set({ 'content-type': 'application/json' })
         .end((err, res) => {
@@ -175,6 +175,18 @@ describe('LOCATION API', () => {
         .end((err, res) => {
           expect(res.status).to.equal(404);
           expect(res.body.message).to.equal('Location not found');
+          done();
+        });
+    });
+  });
+
+  describe('GET Parent Location GET /locations/', () => {
+    it('it should get all parent locations', done => {
+      superRequest.get('/locations')
+        .set({ 'content-type': 'application/json' })
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.locations.count).to.be.greaterThan(0);
           done();
         });
     });

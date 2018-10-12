@@ -3,6 +3,7 @@ const locationController = require('../controllers/location');
 module.exports = (app) => {
   app.route('/locations')
     .post(locationController.create)
+    .get(locationController.getParentLocations)
 
   app.route('/locations/:locationId')
     .get(locationController.getOneLocation)

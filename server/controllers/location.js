@@ -53,10 +53,7 @@ module.exports = {
 
       return res.status(200).send({ location });
     })
-    .catch(e => {
-      console.log(e, 'the error');
-      res.status(400).send({ message: e.errors || e });
-    });
+    .catch(e => res.status(400).send({ message: e.errors[0].message || e }));
   },
 
   getParentLocations(req, res) {

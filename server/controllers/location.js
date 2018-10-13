@@ -125,23 +125,29 @@ module.exports = {
     const { locationId } = req.params;
     const { parentLocation } = req.body;
 
+    if (isNaN(locationId)) return res.status(400).send({ message: 'Invalid location id' })
+
     const updateLocation = () => Location.update(req.body, {
       where: { id: locationId }
     })
     .then(locat => {
       if (locat) {
-        return res.status(200).send({
-          message: 'Location updated successfully'
-        });
+        return res.status(200).send({ message: 'Location updated successfully' });
       }
     })
     .catch(e => res.status(404).send({ message: e.errors[0].message || e }));
 
     return Location.findById(locationId)
     .then(location => {
-      if (!location) return res.status(400).send({ message: 'Location not found' })
+      if (!location) {
+        return res.status(404).send({ message: 'Location not found' });
+      } else if (location && location.id === parentLocation) {
+        return res.status(400).send({ message: 'Location cannot be set as its parent' });
+      }
 
       if (parentLocation) {
+        if (isNaN(parentLocation)) return res.status(400).send({ message: 'Invalid parent location id' });
+
         Location.findById(parentLocation)
         .then((loc) => {
           if (loc) {

@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     parentLocation: {
       type: DataTypes.INTEGER,
+      allowNull: true,
       default: null,
       validate: {
         isInt: {
@@ -20,7 +21,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        min: 1,
+        min: {
+          args: 1,
+          msg: 'Minimum value allowed is 1 for Zip'
+        },
         isInt: {
           msg: 'Invalid zip code'
         },
@@ -34,7 +38,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        min: 1,
+        min: {
+          args: 1,
+          msg: 'Minimum value allowed is 1 for male population'
+        },
         isInt: {
           msg: 'Invalid male population'
         },
@@ -45,7 +52,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        min: 1,
+        min: {
+          args: 1,
+          msg: 'Minimum value allowed is 1 for female population'
+        },
         isInt: {
           msg: 'Invalid female population'
         },

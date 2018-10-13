@@ -114,6 +114,28 @@ module.exports = {
         return res.status(200).send({ message: 'No locations found' });
       }
     })
-    .catch(e => res.status(400).send({ message: e.errors || e }));
+    .catch(e => res.status(400).send({ message: e.errors[0].message || e }));
   },
+
+  deleteLocation(req, res) {
+    const { locationId } = req.params;
+    if (isNaN(locationId)) return res.status(400).send({ message: 'Invalid parent location id' })
+
+    return Location.findById(locationId)
+    .then(location => {
+      if (!location) return res.status(404).send({ message: 'Location not found' })
+
+      return location.destroy({
+        where: { id: req.params.locationId }
+      })
+      .then(() => {
+        Location.findAll({ where: { parentLocation: req.params.locationId }})
+        .then(locations => locations.forEach(loc => loc.updateAttributes({ parentLocation: null })));
+        return res.status(200).send({
+          message: 'Location successfully deleted.'
+       });
+      })
+      .catch(e => res.status(400).send({ message: e.errors[0].message || e }));
+    })
+  }
 }

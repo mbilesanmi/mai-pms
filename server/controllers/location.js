@@ -77,5 +77,40 @@ module.exports = {
       }
     })
     .catch(e => res.status(400).send({ message: e.errors[0].message || e }));
-  }
+  },
+
+  getSubLocationsForParent(req, res) {
+    return Location.findAndCountAll({
+      where: {
+        $or: {
+          id: req.params.parentLocation,
+          parentLocation: req.params.parentLocation
+        }
+      },
+      order: [[ 'id', 'ASC' ]]
+    })
+    .then(locations => {
+      if (locations.count > 0) {
+        let mainLocation = {}
+        let subLocations = []
+        for (let i = 0; i < locations.count; i++) {
+          const { dataValues } = locations.rows[i];
+          
+          const totalPopulation = dataValues.male + dataValues.female;
+          
+          dataValues['totalPopulation'] = totalPopulation;
+          if (dataValues.parentLocation !== null) {
+            subLocations.push(dataValues)
+          } else {
+            mainLocation = dataValues;
+          }
+        }
+        mainLocation['subLocations'] = subLocations;
+        return res.status(200).send({ locations: mainLocation });
+      } else {
+        return res.status(200).send({ message: 'No locations found' });
+      }
+    })
+    .catch(e => res.status(400).send({ message: e.errors || e }));
+  },
 }

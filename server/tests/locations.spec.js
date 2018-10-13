@@ -202,5 +202,15 @@ describe('LOCATION API', () => {
           done();
         });
     });
+
+    it('it should not get sub locations if parent location id is invalid', done => {
+      superRequest.get('/locations/dadsd')
+        .set({ 'content-type': 'application/json' })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.body.message).to.equal('Invalid parent location id');
+          done();
+        });
+    });
   });
 });

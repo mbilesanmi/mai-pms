@@ -80,11 +80,14 @@ module.exports = {
   },
 
   getSubLocationsForParent(req, res) {
+    const { parentLocation } = req.params;
+    if (isNaN(parentLocation)) return res.status(400).send({ message: 'Invalid parent location id' })
+
     return Location.findAll({
       where: {
         $or: {
-          id: req.params.parentLocation,
-          parentLocation: req.params.parentLocation
+          id: parentLocation,
+          parentLocation: parentLocation
         }
       },
       order: [[ 'id', 'ASC' ]]

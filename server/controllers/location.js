@@ -80,7 +80,7 @@ module.exports = {
   },
 
   getSubLocationsForParent(req, res) {
-    return Location.findAndCountAll({
+    return Location.findAll({
       where: {
         $or: {
           id: req.params.parentLocation,
@@ -90,11 +90,11 @@ module.exports = {
       order: [[ 'id', 'ASC' ]]
     })
     .then(locations => {
-      if (locations.count > 0) {
+      if (locations.length > 0) {
         let mainLocation = {}
         let subLocations = []
-        for (let i = 0; i < locations.count; i++) {
-          const { dataValues } = locations.rows[i];
+        for (let i = 0; i < locations.length; i++) {
+          const { dataValues } = locations[i];
           
           const totalPopulation = dataValues.male + dataValues.female;
           

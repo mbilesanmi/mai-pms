@@ -117,6 +117,46 @@ module.exports = {
     .catch(e => res.status(400).send({ message: e.errors[0].message || e }));
   },
 
+  updateLocation(req, res) {
+    if (Object.keys(req.body).length === 0) {
+      return res.status(400).send({ message: 'Request cannot be empty' });
+    };
+
+    const { locationId } = req.params;
+    const { parentLocation } = req.body;
+
+    const updateLocation = () => Location.update(req.body, {
+      where: { id: locationId }
+    })
+    .then(locat => {
+      if (locat) {
+        return res.status(200).send({
+          message: 'Location updated successfully'
+        });
+      }
+    })
+    .catch(e => res.status(404).send({ message: e.errors[0].message || e }));
+
+    return Location.findById(locationId)
+    .then(location => {
+      if (!location) return res.status(400).send({ message: 'Location not found' })
+
+      if (parentLocation) {
+        Location.findById(parentLocation)
+        .then((loc) => {
+          if (loc) {
+            updateLocation();
+          } else {
+            return res.status(400).send({ message: 'Parent Location not found' });
+          }
+        }) 
+        .catch(e => res.status(400).send({ message: e.errors[0].message || e }));
+      } else {
+        updateLocation();
+      }
+    })
+  },
+
   deleteLocation(req, res) {
     const { locationId } = req.params;
     if (isNaN(locationId)) return res.status(400).send({ message: 'Invalid parent location id' })

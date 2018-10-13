@@ -213,4 +213,36 @@ describe('LOCATION API', () => {
         });
     });
   });
+
+  describe('DELETE Location DELETE /api/location', () => {
+    it('it should delete a single location successfully', done => {
+      superRequest.delete(`/location/${location1.id}`)
+        .set({ 'content-type': 'application/json' })
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.message).to.equal('Location successfully deleted.');
+          done();
+        });
+    });
+
+    it('it should fail to delete location for locationId that does not exist', done => {
+      superRequest.delete('/location/324324')
+        .set({ 'content-type': 'application/json' })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          expect(res.body.message).to.equal('Location not found');
+          done();
+        });
+    });
+
+    it('it should fail to delete location for locationId with invalid type', done => {
+      superRequest.delete('/location/invalid')
+        .set({ 'content-type': 'application/json' })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.body.message).to.equal('Invalid parent location id');
+          done();
+        });
+    });
+  });
 });

@@ -147,7 +147,7 @@ describe('LOCATION API', () => {
 
   describe('GET Location GET /locations', () => {
     it('it should get a location when the locationId is valid', done => {
-      superRequest.get(`/locations/${location1.id}`)
+      superRequest.get(`/location/${location1.id}`)
         .set({ 'content-type': 'application/json' })
         .end((err, res) => {
           expect(res.status).to.equal(200);
@@ -160,7 +160,7 @@ describe('LOCATION API', () => {
     });
 
     it('it should not get a location when the locationId is invalid', done => {
-      superRequest.get('/locations/"invalid"')
+      superRequest.get('/location/"invalid"')
         .set({ 'content-type': 'application/json' })
         .end((err, res) => {
           expect(res.status).to.equal(400);
@@ -170,7 +170,7 @@ describe('LOCATION API', () => {
     });
 
     it('it should not get a location when the locationId does not exist', done => {
-      superRequest.get('/locations/99999')
+      superRequest.get('/location/99999')
         .set({ 'content-type': 'application/json' })
         .end((err, res) => {
           expect(res.status).to.equal(404);
@@ -187,6 +187,18 @@ describe('LOCATION API', () => {
         .end((err, res) => {
           expect(res.status).to.equal(200);
           expect(res.body.locations.count).to.be.greaterThan(0);
+          done();
+        });
+    });
+  });
+
+  describe('GET sub locations GET /locations/parentLocation', () => {
+    it('it should get sub locations for a given location', done => {
+      superRequest.get(`/locations/${location1.id}`)
+        .set({ 'content-type': 'application/json' })
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.locations.subLocations.length).to.be.greaterThan(0);
           done();
         });
     });

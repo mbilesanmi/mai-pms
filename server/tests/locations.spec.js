@@ -214,7 +214,89 @@ describe('LOCATION API', () => {
     });
   });
 
-  describe('DELETE Location DELETE /api/location', () => {
+  describe('EDIT Location PUT /location', () => {
+
+    it('it should not edit a location with its own locationId as parent', done => {
+      superRequest.put(`/location/${location2.id}`)
+        .set({ 'content-type': 'application/json' })
+        .send({ 
+          parentLocation: location2.id
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.body.message).to.equal('Location cannot be set as its parent');
+          done();
+        });
+    });
+
+    it('it should not edit a location with invalid parentLocation', done => {
+      superRequest.put(`/location/${location2.id}`)
+        .set({ 'content-type': 'application/json' })
+        .send({ 
+          parentLocation: 'asdasda'
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.body.message).to.equal('Invalid parent location id');
+          done();
+        });
+    });
+
+    it('it should not edit a location with invalid location id', done => {
+      superRequest.put('/location/sads')
+        .set({ 'content-type': 'application/json' })
+        .send({ 
+          parentLocation: 111
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.body.message).to.equal('Invalid location id');
+          done();
+        });
+    });
+    
+    it('it should edit a single location successfully with parentLocation', done => {
+      superRequest.put(`/location/${location2.id}`)
+        .set({ 'content-type': 'application/json' })
+        .send({ 
+          parentLocation: location1.id
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.message).to.equal('Location updated successfully');
+          done();
+        });
+    });
+
+    it('it should edit a single location successfully', done => {
+      superRequest.put(`/location/${location1.id}`)
+        .set({ 'content-type': 'application/json' })
+        .send({ 
+          male: 300000,
+          female: 350000
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.message).to.equal('Location updated successfully');
+          done();
+        });
+    });
+
+    it('it should fail to edit location for locationId that does not exist', done => {
+      superRequest.put('/location/9999')
+        .set({ 'content-type': 'application/json' })
+        .send({ 
+          name: 'Taraba'
+        })
+        .end((err, res) => {
+          expect(res.status).to.equal(404);
+          expect(res.body.message).to.equal('Location not found');
+          done();
+        });
+    });
+  });
+
+  describe('DELETE Location DELETE /location', () => {
     it('it should delete a single location successfully', done => {
       superRequest.delete(`/location/${location1.id}`)
         .set({ 'content-type': 'application/json' })

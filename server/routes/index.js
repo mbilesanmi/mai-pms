@@ -10,6 +10,7 @@ module.exports = (app) => {
 
   app.route('/location/:locationId')
     .get(locationController.getOneLocation)
+    .delete(locationController.deleteLocation)
 
   
   app.get('/', (req, res) => res.status(200).send({

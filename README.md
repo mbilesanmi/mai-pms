@@ -4,7 +4,7 @@
 Population Management System (PMS) API
 
 * Access the hosted application on Heroku using this [link](https://mai-pms.herokuapp.com/). 
-* PMS API Route documentation can be found [here](https://app.apiary.io/maipms/editor)
+* PMS API Route documentation can be found [here](https://maipms.docs.apiary.io)
 
 ### Features
 ---
@@ -28,8 +28,14 @@ Below are the collection of routes.
 
 #### LOCATION
 
-EndPoint          |   Functionality    |    Request body/params
-------------------|--------------------|--------------------------------------------------------------
+EndPoint                          |   Functionality    
+----------------------------------|--------------------------------------------
+POST /locations                   | Create a location
+GET /locations/                   | Gets all locations
+GET /locations/:parentLocation    | Gets a location with its sub-locations
+PUT /location/:locationId         | Update a location
+DELETE /location/:locationId      | Delete a location
+GET /location/locationId          | Get a location
 
 ### Technologies Used
 ---

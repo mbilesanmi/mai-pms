@@ -1,7 +1,5 @@
-https://travis-ci.org/mbilesanmi/mai-pms.svg?branch=master
+[![Build Status](https://travis-ci.org/mbilesanmi/mai-pms.svg?branch=master)](https://travis-ci.org/mbilesanmi/mai-pms)
 
-
-[![Build Status](https://travis-ci.org/mbilesanmi/rng.svg?branch=master)](https://travis-ci.org/mbilesanmi/rng)
 # PMS API
 Population Management System (PMS) API
 
